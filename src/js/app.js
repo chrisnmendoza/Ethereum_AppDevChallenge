@@ -49,6 +49,8 @@ App = {
 
   bindEvents: function() {
     $(document).on('click', '.btn-clickMe', App.handleClickMe);
+    $(document).on('click', '.btn-enterInfo', App.handleEnterInfo);
+    $(document).on('click', '.btn-checkInfo', App.handleCheckInfo);
   },
 
   markClicked: function() {
@@ -56,6 +58,8 @@ App = {
 
     App.contracts.Adoption.deployed().then(function(instance) {
       adoptionInstance = instance;
+
+  
     
       return adoptionInstance.getAdopters.call();
     }).then(function(clickers) {
@@ -67,6 +71,11 @@ App = {
     }).catch(function(err) {
       console.log(err.message);
     });
+  },
+
+  greet: async function() {
+    document.getElementById("greeting").innerHTML = "Bonjour";
+    return await instance.getCount();
   },
 
   handleClickMe: function(event) {
@@ -84,10 +93,121 @@ App = {
     
       App.contracts.Adoption.deployed().then(function(instance) {
         adoptionInstance = instance;
-    
+
+        //console.log(instance.timesClicked.call());
+        instance.timesClicked.call().then(function(res) {
+          console.log(res.c[0]);
+          document.getElementById("greeting").innerHTML = res.c[0];
+        });
+
+
+        //let count = instance.clickMe({from: account});
+        //document.getElementById("greeting").innerHTML = "Bonjour";
+
+
+
         // Execute adopt as a transaction by sending account
         return adoptionInstance.clickMe({from: account});
       }).then(function(result) {
+        console.log(result);
+        return App.markClicked();
+      }).catch(function(err) {
+        console.log(err.message);
+      });
+    });
+  },
+
+  handleEnterInfo: function(event) {
+    console.log("fortnite");
+    event.preventDefault();
+
+    var adoptionInstance;
+
+    web3.eth.getAccounts(function(error, accounts) {
+      if (error) {
+        console.log(error);
+      }
+    
+      var account = accounts[0];
+    
+      App.contracts.Adoption.deployed().then(function(instance) {
+        adoptionInstance = instance;
+
+        //console.log(instance.timesClicked.call());
+        instance.timesClicked.call().then(function(res) {
+          console.log(res.c[0]);
+          document.getElementById("greeting").innerHTML = res.c[0];
+          console.log(document.getElementById("info").value.toString());
+        });
+
+        var pid = parseInt(5);
+        console.log(pid);
+        var pleaseeeee = String(document.getElementById("info").value);
+        console.log(pleaseeeee);
+
+
+        //let count = instance.clickMe({from: account});
+        //document.getElementById("greeting").innerHTML = "Bonjour";
+
+        
+
+        // Execute adopt as a transaction by sending account
+        return adoptionInstance.clickMe(pleaseeeee,{from: account});
+      }).then(function(result) {
+        console.log(result);
+        return App.markClicked();
+      }).catch(function(err) {
+        console.log(err.message);
+      });
+    });
+  },
+
+  handleCheckInfo: function(event) {
+    console.log("fortnite");
+    event.preventDefault();
+
+    var adoptionInstance;
+
+    web3.eth.getAccounts(function(error, accounts) {
+      if (error) {
+        console.log(error);
+      }
+    
+      var account = accounts[0];
+    
+      App.contracts.Adoption.deployed().then(function(instance) {
+        adoptionInstance = instance;
+
+        //console.log(instance.timesClicked.call());
+        instance.timesClicked.call().then(function(res) {
+          console.log(res.c[0]);
+          document.getElementById("greeting").innerHTML = res.c[0];
+          console.log(document.getElementById("info").value.toString());
+        });
+
+        var pid = parseInt(5);
+        console.log(pid);
+        var checking = String(document.getElementById("check").value);
+        console.log(checking);
+
+        instance.checkInfoExists.call(checking).then(function(res) {
+          console.log(res);
+          document.getElementById("isFound").innerHTML = res;
+        });
+
+        //this doesn't actually return anything
+
+
+
+        //let count = instance.clickMe({from: account});
+        //document.getElementById("greeting").innerHTML = "Bonjour";
+
+        
+
+        // Execute adopt as a transaction by sending account
+        //return adoptionInstance.clickMe(checking);
+      }).then(function(result) {
+        //console.log(result);
         return App.markClicked();
       }).catch(function(err) {
         console.log(err.message);
