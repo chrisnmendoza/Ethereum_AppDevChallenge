@@ -79,7 +79,7 @@ App = {
   },
 
   handleClickMe: function(event) {
-    console.log("fortnite");
+    console.log("clicked");
     event.preventDefault();
 
     var adoptionInstance;
@@ -118,7 +118,7 @@ App = {
   },
 
   handleEnterInfo: function(event) {
-    console.log("fortnite");
+    console.log("entered");
     event.preventDefault();
 
     var adoptionInstance;
@@ -136,14 +136,16 @@ App = {
         //console.log(instance.timesClicked.call());
         instance.timesClicked.call().then(function(res) {
           console.log(res.c[0]);
-          document.getElementById("greeting").innerHTML = res.c[0];
-          console.log(document.getElementById("info").value.toString());
+          console.log(document.getElementById("fn").value.toString());
+          console.log(document.getElementById("ln").value.toString());
+          console.log(document.getElementById("date").value.toString());
         });
 
-        var pid = parseInt(5);
-        console.log(pid);
-        var pleaseeeee = String(document.getElementById("info").value);
-        console.log(pleaseeeee);
+        let fullInfo = document.getElementById("fn").value.toString();
+        fullInfo = fullInfo.concat(document.getElementById("ln").value.toString());
+        fullInfo = fullInfo.concat(document.getElementById("date").value.toString());
+
+        console.log(fullInfo);
 
 
         //let count = instance.clickMe({from: account});
@@ -152,7 +154,7 @@ App = {
         
 
         // Execute adopt as a transaction by sending account
-        return adoptionInstance.clickMe(pleaseeeee,{from: account});
+        return adoptionInstance.clickMe(fullInfo,{from: account});
       }).then(function(result) {
         console.log(result);
         return App.markClicked();
@@ -163,7 +165,7 @@ App = {
   },
 
   handleCheckInfo: function(event) {
-    console.log("fortnite");
+    console.log("checked");
     event.preventDefault();
 
     var adoptionInstance;
@@ -181,18 +183,23 @@ App = {
         //console.log(instance.timesClicked.call());
         instance.timesClicked.call().then(function(res) {
           console.log(res.c[0]);
-          document.getElementById("greeting").innerHTML = res.c[0];
-          console.log(document.getElementById("info").value.toString());
+          //document.getElementById("greeting").innerHTML = res.c[0];
+          //console.log(document.getElementById("info").value.toString());
         });
 
-        var pid = parseInt(5);
-        console.log(pid);
-        var checking = String(document.getElementById("check").value);
-        console.log(checking);
+        let checkingInfo = document.getElementById("firstCheck").value.toString();
+        checkingInfo = checkingInfo.concat(document.getElementById("lastCheck").value.toString());
+        checkingInfo = checkingInfo.concat(document.getElementById("dateCheck").value.toString());
+        console.log(checkingInfo);
 
-        instance.checkInfoExists.call(checking).then(function(res) {
+        instance.checkInfoExists.call(checkingInfo).then(function(res) {
           console.log(res);
-          document.getElementById("isFound").innerHTML = res;
+          if(res) {
+            document.getElementById("isFound").innerHTML = "VACCINATED";
+          }
+          else {
+            document.getElementById("isFound").innerHTML = "NOT IN RECORDS/NOT VACCINATED";
+          }
         });
 
         //this doesn't actually return anything
